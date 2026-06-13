@@ -57,6 +57,7 @@ pages = [
     ("pages/3_Butce_Gelir_Analizi.py", "💰 Bütçe & Gelir Analizi", "Bütçe / gişe geliri ilişkisi ve en kârlı filmler.", True),
     ("pages/4_Yonetmen_Oyuncu_Analizi.py", "🎬 Yönetmen & Oyuncu Analizi", "En yüksek ortalama skora sahip yönetmen ve oyuncular.", True),
     ("pages/5_Veri_Kesfi.py", "🔍 Veri Keşfi", "Filtrelenebilir, aranabilir ham veri tablosu.", True),
+    ("pages/6_Populerlik_Sosyal_Medya_Analizi.py", "📈 Popülerlik & Sosyal Medya Analizi", "Oy sayısı, Facebook beğenileri, ülke ve içerik derecesi analizleri.", True),
 ]
 
 cols = st.columns(len(pages))
