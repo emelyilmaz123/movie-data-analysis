@@ -1,15 +1,27 @@
 import streamlit as st
 import pandas as pd
 from utils import load_data
+from lang import t, STRINGS
 
-st.set_page_config(
-    page_title="FilmRadar",
-    page_icon="📡",
-    layout="wide",
-)
+st.set_page_config(page_title="FilmRadar", page_icon="📡", layout="wide")
 
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+if 'lang' not in st.session_state:
+    st.session_state['lang'] = 'tr'
+
+# Dil butonu
+col_lang = st.columns([8, 1])[1]
+with col_lang:
+    if st.session_state['lang'] == 'tr':
+        if st.button("🇬🇧 English"):
+            st.session_state['lang'] = 'en'
+            st.rerun()
+    else:
+        if st.button("🇹🇷 Türkçe"):
+            st.session_state['lang'] = 'tr'
+            st.rerun()
 
 df = load_data()
 
@@ -17,29 +29,22 @@ df = load_data()
 # HERO
 # ---------------------------------------------------------------
 st.markdown(
-    """
+    f"""
     <div class="hero">
         <div class="hero-logo">📡 FilmRadar</div>
-        <p class="hero-sub">Tarif et. Biz bulalım.</p>
-        <p class="hero-desc">
-            Adını hatırlamıyor musun? Türünü, oyuncusunu, yönetmenini ya da aklındaki herhangi bir şeyi yaz.
-            FilmRadar binlerce film arasından en iyi eşleşmeleri sana getirir.
-        </p>
+        <p class="hero-sub">{t('hero_sub')}</p>
+        <p class="hero-desc">{t('hero_desc')}</p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
 # ---------------------------------------------------------------
-# SEARCH — AKLIMDA Kİ FİLM
+# ARAMA
 # ---------------------------------------------------------------
-st.markdown('<p class="section-title">🔍 Aklındaki filmi bul</p>', unsafe_allow_html=True)
+st.markdown(f'<p class="section-title">{t("search_title")}</p>', unsafe_allow_html=True)
 
-query = st.text_input(
-    "",
-    placeholder="Örn: Nolan   psikolojik gerilim   hapishane   uzay   Tom Hanks",
-    label_visibility="collapsed",
-)
+query = st.text_input("", placeholder=t('search_main_placeholder'), label_visibility="collapsed")
 
 TR_TO_EN = {
     "aksiyon": "action", "korku": "horror", "komedi": "comedy",
@@ -75,14 +80,14 @@ def search_films(df, query):
 if query:
     results = search_films(df, query)
     if results.empty:
-        st.warning("Eşleşen film bulunamadı. Farklı kelimeler dene.")
+        st.warning(t('no_match'))
     else:
-        st.success(f"**{len(results)} film bulundu** — en iyi sonuçlar gösteriliyor")
+        st.success(f"**{len(results)} {t('found')}** — {t('showing_top')}")
         display = results[['movie_title', 'director_name', 'actor_1_name',
                             'genres', 'title_year', 'imdb_score']].head(20).copy()
-        display.columns = ['Film Adı', 'Yönetmen', 'Başrol', 'Türler', 'Yıl', 'IMDB']
-        display['Yıl'] = display['Yıl'].astype(int)
-        display['IMDB'] = display['IMDB'].round(1)
+        display.columns = [t('film'), t('director'), t('lead_actor'), t('genres'), t('year'), t('imdb')]
+        display[t('year')] = display[t('year')].astype(int)
+        display[t('imdb')] = display[t('imdb')].round(1)
         display = display.reset_index(drop=True)
         display.index += 1
         st.dataframe(display, use_container_width=True)
@@ -90,16 +95,16 @@ if query:
 st.markdown("---")
 
 # ---------------------------------------------------------------
-# WHAT TO WATCH — TÜR SEÇİMİ
+# NE İZLEMELİYİM
 # ---------------------------------------------------------------
-st.markdown('<p class="section-title">🎬 Ne izlemeliyim?</p>', unsafe_allow_html=True)
-st.write("Türünü seç, yıl ve skor filtrele — sana en iyileri getirelim.")
+st.markdown(f'<p class="section-title">{t("watch_title")}</p>', unsafe_allow_html=True)
+st.write(t('watch_desc'))
 
 col1, col2, col3 = st.columns(3)
 genres = sorted(df['main_genre'].dropna().unique().tolist())
-selected_genre = col1.selectbox("Tür", genres)
-year_range = col2.slider("Yıl aralığı", int(df['title_year'].min()), int(df['title_year'].max()), (2000, int(df['title_year'].max())))
-min_score = col3.slider("Minimum IMDB skoru", 1.0, 9.0, 6.5, step=0.1)
+selected_genre = col1.selectbox(t('genre_select'), genres)
+year_range = col2.slider(t('year_range'), int(df['title_year'].min()), int(df['title_year'].max()), (2000, int(df['title_year'].max())))
+min_score = col3.slider(t('min_score'), 1.0, 9.0, 6.5, step=0.1)
 
 filtered = df[
     (df['main_genre'] == selected_genre) &
@@ -109,7 +114,7 @@ filtered = df[
 ].sort_values('imdb_score', ascending=False).head(10)
 
 if filtered.empty:
-    st.warning("Bu kriterlere uyan film bulunamadı. Filtreleri genişletmeyi dene.")
+    st.warning(t('no_match_filter'))
 else:
     for i, row in enumerate(filtered.itertuples(), 1):
         c1, c2, c3, c4 = st.columns([3, 2, 1, 1])
@@ -121,35 +126,23 @@ else:
 st.markdown("---")
 
 # ---------------------------------------------------------------
-# STATS + ANALİZ SAYFALAR
+# İSTATİSTİKLER
 # ---------------------------------------------------------------
-st.markdown('<p class="section-title">📊 Veri Tabanı</p>', unsafe_allow_html=True)
+st.markdown(f'<p class="section-title">{t("db_title")}</p>', unsafe_allow_html=True)
 
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Toplam Film", f"{len(df):,}")
-col2.metric("Ortalama IMDB", f"{df['imdb_score'].mean():.2f}")
-col3.metric("Yönetmen Sayısı", f"{df['director_name'].nunique():,}")
-col4.metric("Yıl Aralığı", f"{df['title_year'].min()} – {df['title_year'].max()}")
+col1.metric(t('total_films'), f"{len(df):,}")
+col2.metric(t('avg_imdb'), f"{df['imdb_score'].mean():.2f}")
+col3.metric(t('directors'), f"{df['director_name'].nunique():,}")
+col4.metric(t('year_range_label'), f"{df['title_year'].min()} – {df['title_year'].max()}")
 
-st.markdown('<p class="section-title">📈 Detaylı Analizler</p>', unsafe_allow_html=True)
+st.markdown(f'<p class="section-title">{t("analysis_title")}</p>', unsafe_allow_html=True)
 
-pages = [
-    ("pages/8_Film_Detay.py",                     "🎞️ Film Detay",             "Bir filmin tüm verilerini, ekibini ve benzer filmleri gör."),
-    ("pages/1_Yil_Analizi.py",                    "📅 Yıl Trendleri",          "Yıllara göre film sayısı ve IMDB skor trendi."),
-    ("pages/2_Tur_Analizi.py",                    "🎭 Tür Analizi",            "Tür dağılımı ve ortalama skorlar."),
-    ("pages/3_Butce_Gelir_Analizi.py",            "💰 Bütçe & Gelir",          "Yüksek bütçe başarıyı garantiler mi?"),
-    ("pages/4_Yonetmen_Oyuncu_Analizi.py",        "🎬 Yönetmen & Oyuncu",      "En tutarlı yönetmen ve oyuncular kimler?"),
-    ("pages/5_Veri_Kesfi.py",                     "🔍 Veri Keşfi",             "Ham veriyi ara, filtrele, keşfet."),
-    ("pages/6_Populerlik_Sosyal_Medya_Analizi.py","📈 Popülerlik & Sosyal",    "Oy sayısı, beğeniler, ülke ve içerik analizi."),
-]
-
+pages = t('pages')
 cols = st.columns(len(pages))
 for col, (path, title, desc) in zip(cols, pages):
     with col:
         if st.button(f"{title}\n\n{desc}", key=path, use_container_width=True):
             st.switch_page(path)
 
-st.markdown(
-    '<p class="footer">FilmRadar · IMDB 5000 Movie Dataset · Geliştirici: Emel Yılmaz</p>',
-    unsafe_allow_html=True,
-)
+st.markdown(f'<p class="footer">{t("footer")}</p>', unsafe_allow_html=True)
