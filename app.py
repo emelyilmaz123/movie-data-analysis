@@ -132,4 +132,40 @@ for col, (path, title, desc) in zip(cols, pages):
         if st.button(f"{title}\n\n{desc}", key=path, use_container_width=True):
             st.switch_page(path)
 
-st.markdown(f'<p class="footer">{t("footer")}</p>', unsafe_allow_html=True)
+st.markdown(
+    f"""
+    <div class="footer-rich">
+        <div class="footer-logo">📡 FilmRadar</div>
+        <p class="footer-desc">{t('footer_desc')}</p>
+
+        <div class="footer-stats">
+            <div class="footer-stat">
+                <div class="footer-stat-value">{len(df):,}</div>
+                <div class="footer-stat-label">{t('footer_stat_films')}</div>
+            </div>
+            <div class="footer-stat">
+                <div class="footer-stat-value">{df['director_name'].nunique():,}</div>
+                <div class="footer-stat-label">{t('footer_stat_directors')}</div>
+            </div>
+            <div class="footer-stat">
+                <div class="footer-stat-value">{df['main_genre'].nunique()}</div>
+                <div class="footer-stat-label">{t('footer_stat_genres')}</div>
+            </div>
+            <div class="footer-stat">
+                <div class="footer-stat-value">{int(df['title_year'].min())}–{int(df['title_year'].max())}</div>
+                <div class="footer-stat-label">{t('footer_stat_years')}</div>
+            </div>
+        </div>
+
+        <div class="footer-links">
+            <span>👩‍💻 {t('footer_dev')}: Emel Yılmaz</span>
+            <a href="https://github.com/emelyilmaz123/movie-data-analysis" target="_blank">⭐ GitHub</a>
+            <a href="https://streamlit.io" target="_blank">🚀 Streamlit</a>
+            <span>📊 IMDB 5000 Dataset</span>
+        </div>
+
+        <div class="footer-copy">{t('footer_copy')}</div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)

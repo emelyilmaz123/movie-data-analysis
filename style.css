@@ -126,3 +126,75 @@ div[data-testid="stButton"] button:hover {
     font-size: 0.85rem;
     margin-top: 1.5rem;
 }
+
+.footer-rich {
+    background: linear-gradient(135deg, #0f172a 0%, #0f766e 100%);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    margin-top: 3rem;
+    color: #cbd5e1;
+}
+
+.footer-rich .footer-logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+}
+
+.footer-rich .footer-desc {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    max-width: 500px;
+    margin: 0 auto 1.5rem auto;
+}
+
+.footer-rich .footer-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-rich .footer-stat {
+    text-align: center;
+}
+
+.footer-rich .footer-stat-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5eead4;
+}
+
+.footer-rich .footer-stat-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.footer-rich .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.footer-rich .footer-links a {
+    color: #5eead4;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.15s;
+}
+
+.footer-rich .footer-links a:hover {
+    color: #ffffff;
+}
+
+.footer-rich .footer-copy {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+}
