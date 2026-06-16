@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 from utils import load_data
-from lang import t, render_lang_selector
+from lang import t, render_lang_selector, render_footer
 
 st.set_page_config(page_title="Film Detay", page_icon="🎞️", layout="wide")
 
@@ -114,3 +114,5 @@ else:
     for i, (_, row) in enumerate(benzer.iterrows()):
         with cols[i % 3]:
             st.markdown(f'<div class="info-card"><h4>{row["movie_title"]}</h4><p>🎬 {row["director_name"]}<br>📅 {int(row["title_year"])} &nbsp;·&nbsp; ⭐ {row["imdb_score"]:.1f}</p></div>', unsafe_allow_html=True)
+
+render_footer(df)

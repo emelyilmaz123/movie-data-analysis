@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from utils import load_data
-from lang import t, render_lang_selector
+from lang import t, render_lang_selector, render_footer
 
 st.set_page_config(page_title="Bütçe & Gelir Analizi", page_icon="💰", layout="wide")
 
@@ -58,3 +58,5 @@ top_profit.columns = [t('film'), t('year'), f"{t('budget')} ($)", f"{t('gross')}
 st.dataframe(top_profit, use_container_width=True, hide_index=True)
 
 st.markdown(f'<div class="info-card"><h4>{t("finding")}</h4><p>{t("butce_finding")}</p></div>', unsafe_allow_html=True)
+
+render_footer(df)

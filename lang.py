@@ -300,6 +300,39 @@ def t(key):
     return STRINGS[lang].get(key, key)
 
 
+def render_footer(df):
+    import streamlit as st
+    lang = st.session_state.get('lang', 'tr')
+    s = STRINGS[lang]
+    total_films = len(df)
+    total_directors = df['director_name'].nunique()
+    total_genres = df['main_genre'].nunique()
+    year_min = int(df['title_year'].min())
+    year_max = int(df['title_year'].max())
+    st.markdown(
+        f"""
+        <div style="background:linear-gradient(135deg,#0f172a 0%,#0f766e 100%);border-radius:16px;padding:2.5rem 2rem;margin-top:3rem;text-align:center;">
+            <div style="font-family:Poppins,sans-serif;font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:0.4rem;">📡 FilmRadar</div>
+            <p style="font-size:0.95rem;color:#94a3b8;max-width:520px;margin:0 auto 1.8rem auto;line-height:1.7;">{s['footer_desc']}</p>
+            <div style="display:flex;justify-content:center;gap:2.5rem;margin-bottom:1.8rem;flex-wrap:wrap;">
+                <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{total_films:,}</div><div style="font-size:0.8rem;color:#94a3b8;">{s['footer_stat_films']}</div></div>
+                <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{total_directors:,}</div><div style="font-size:0.8rem;color:#94a3b8;">{s['footer_stat_directors']}</div></div>
+                <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{total_genres}</div><div style="font-size:0.8rem;color:#94a3b8;">{s['footer_stat_genres']}</div></div>
+                <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{year_min}–{year_max}</div><div style="font-size:0.8rem;color:#94a3b8;">{s['footer_stat_years']}</div></div>
+            </div>
+            <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:1rem;font-size:0.9rem;">
+                <span style="color:#cbd5e1;">👩‍💻 {s['footer_dev']}: Emel Yılmaz</span>
+                <a href="https://github.com/emelyilmaz123/movie-data-analysis" target="_blank" style="color:#5eead4;text-decoration:none;">⭐ GitHub</a>
+                <a href="https://streamlit.io" target="_blank" style="color:#5eead4;text-decoration:none;">🚀 Streamlit</a>
+                <span style="color:#cbd5e1;">📊 IMDB 5000 Dataset</span>
+            </div>
+            <div style="font-size:0.8rem;color:#64748b;">{s['footer_copy']}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_lang_selector():
     import streamlit as st
     if 'lang' not in st.session_state:

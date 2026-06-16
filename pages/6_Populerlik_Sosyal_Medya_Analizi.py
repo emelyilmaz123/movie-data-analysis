@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from utils import load_data
-from lang import t, render_lang_selector
+from lang import t, render_lang_selector, render_footer
 
 st.set_page_config(page_title="Popülerlik & Sosyal Medya", page_icon="📈", layout="wide")
 
@@ -94,3 +94,5 @@ rating_avg = (rating_df[rating_df['content_rating'].isin(common_ratings)]
 rating_avg.columns = [t('pop_rating'), t('imdb')]
 fig6 = px.bar(rating_avg, x=t('pop_rating'), y=t('imdb'), color_discrete_sequence=['#14b8a6'])
 col6.plotly_chart(fig6, use_container_width=True)
+
+render_footer(df)

@@ -1,6 +1,6 @@
 import streamlit as st
 from utils import load_data
-from lang import t, render_lang_selector
+from lang import t, render_lang_selector, render_footer
 
 st.set_page_config(page_title="Veri Keşfi", page_icon="🔍", layout="wide")
 
@@ -45,3 +45,5 @@ st.dataframe(result, use_container_width=True, hide_index=True)
 
 csv = result.to_csv(index=False).encode('utf-8')
 st.download_button(t('veri_download'), data=csv, file_name="films.csv", mime="text/csv")
+
+render_footer(df)

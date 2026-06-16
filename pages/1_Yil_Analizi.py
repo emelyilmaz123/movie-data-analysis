@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.express as px
 from utils import load_data
-from lang import t, render_lang_selector
+from lang import t, render_lang_selector, render_footer
 
 st.set_page_config(page_title="Yıl Analizi", page_icon="📅", layout="wide")
 
@@ -67,3 +67,5 @@ if secili_film is not None:
 st.plotly_chart(fig2, use_container_width=True)
 
 st.markdown(f'<div class="info-card"><h4>{t("finding")}</h4><p>{t("yil_finding")}</p></div>', unsafe_allow_html=True)
+
+render_footer(df)
