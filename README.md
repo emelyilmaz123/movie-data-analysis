@@ -1,50 +1,51 @@
-# Film Veri Analizi (IMDB 5000 Movie Dataset)
+# 📡 FilmRadar — Film Keşif ve Analiz Platformu
 
-Bu proje, IMDB'den derlenen ~5000 filmlik veri seti üzerinde yapılan keşifçi veri analizini (EDA) içerir. Pandas ile veri temizleme, gruplama ve istatistiksel özetler; Matplotlib/Seaborn ile görselleştirmeler yapılmıştır.
+FilmRadar, IMDB 5000 Movie Dataset üzerinde geliştirilmiş interaktif bir film keşif ve veri analizi platformudur. Bir filmi tarif ederek arayabilir, türe göre öneri alabilir ve detaylı analizlere ulaşabilirsin.
 
-## Kullanılan Kütüphaneler
+🌐 **Canlı Site:** https://movie-data-analysis-6jfxfzmalaig8m5wxpyjui.streamlit.app
 
-- pandas
-- matplotlib
-- seaborn
+---
+
+## Özellikler
+
+- 🔍 **Aklındaki Filmi Bul** — Yönetmen, oyuncu, tür, konu veya anahtar kelime ile arama. Türkçe kelime desteği mevcut.
+- 🎬 **Ne İzlemeliyim?** — Tür, yıl aralığı ve IMDB skoruna göre filtre uygula, en iyi filmleri listele.
+- 🎞️ **Film Detay** — Seçilen filmin tüm verileri: ekip, bütçe/gişe, sosyal medya beğenileri, yönetmen filmleri ve benzer film önerileri.
+- 📅 **Yıl Trendleri** — Yıllara göre film sayısı ve ortalama IMDB skoru trendi.
+- 🎭 **Tür Analizi** — Tür dağılımı ve türlere göre ortalama skorlar.
+- 💰 **Bütçe & Gelir** — Bütçe / gişe geliri ilişkisi ve en kârlı filmler.
+- 🎬 **Yönetmen & Oyuncu** — En yüksek ortalama skora sahip yönetmen ve oyuncular.
+- 🔎 **Veri Keşfi** — Filtrelenebilir, indirilebilir ham veri tablosu.
+- 📈 **Popülerlik & Sosyal** — Oy sayısı, Facebook beğenileri, ülke ve içerik derecesi analizleri.
+
+---
+
+## Kullanılan Teknolojiler
+
+- **Python**
+- **Streamlit** — Web arayüzü
+- **Pandas** — Veri işleme
+- **Plotly** — İnteraktif grafikler
+
+---
 
 ## Veri Seti
 
-`movie_metadata.csv` — 28 sütun, ~5000 film. Önemli sütunlar:
+`movie_metadata.csv` — 28 sütun, ~5000 film (IMDB 5000 Movie Dataset)
 
-- `movie_title`, `director_name`, `genres`, `title_year`
-- `budget`, `gross`, `imdb_score`
-- `num_voted_users`, `num_critic_for_reviews`, `movie_facebook_likes`
+Temel sütunlar: `movie_title`, `director_name`, `genres`, `title_year`, `budget`, `gross`, `imdb_score`, `plot_keywords`, `num_voted_users`, `movie_facebook_likes`
 
-## Yapılan Analizler
+---
 
-1. **Veri Temizleme**: Tekrarlanan satırların kaldırılması, eksik değerlerin (`budget`, `gross`, `imdb_score`, `title_year`) filtrelenmesi, ana türün (`main_genre`) ve kâr (`profit = gross - budget`) hesaplanması.
-2. **Genel İstatistikler**: IMDB skor dağılımı, yıllara göre film sayısı.
-3. **Tür Analizi**: En yaygın türler ve türlere göre ortalama IMDB skoru (en az 50 film içeren türler).
-4. **En İyi Filmler / Yönetmenler**: IMDB skoruna göre ilk 10 film, en kârlı 10 film, en az 5 film çekmiş yönetmenler arasında en yüksek ortalama skora sahip olanlar.
-5. **Görselleştirmeler**:
-   - Yıllara göre ortalama IMDB skoru trendi
-   - Türlere göre ortalama IMDB skoru
-   - Bütçe vs gişe geliri (log-log scatter plot)
-   - Sayısal değişkenler arası korelasyon ısı haritası
-
-## Önemli Bulgular
-
-- **En yüksek ortalama skora sahip yönetmenler**: Christopher Nolan (8.43), Quentin Tarantino (8.20), James Cameron (7.91)
-- **En kârlı filmler**: Avatar, Jurassic World, Titanic
-- **Tür bazında ortalama IMDB skoru**: Biography ve Crime, Drama gibi türler Action/Comedy/Horror'a göre ortalamada daha yüksek puan alıyor
-- **Bütçe ile gişe geliri arasında pozitif bir ilişki** var, ancak yüksek bütçe her zaman yüksek gelir garantisi değil
-
-## Görseller
-
-![Yıllara Göre Ortalama IMDB Skoru](yillara_gore_skor.png)
-![Türlere Göre Ortalama IMDB Skoru](tur_ortalama_skor.png)
-![Bütçe vs Gişe Geliri](butce_vs_gelir.png)
-![Korelasyon Isı Haritası](korelasyon_isi_haritasi.png)
-
-## Çalıştırma
+## Kurulum & Çalıştırma
 
 ```bash
-pip install pandas matplotlib seaborn
-python analiz.py
+pip install streamlit pandas plotly
+streamlit run app.py
 ```
+
+---
+
+## Geliştirici
+
+**Emel Yılmaz**
