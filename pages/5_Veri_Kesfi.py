@@ -25,7 +25,7 @@ with col3:
     min_score, max_score = float(df['imdb_score'].min()), float(df['imdb_score'].max())
     score_range = st.slider("IMDB Skoru Aralığı", min_score, max_score, (min_score, max_score))
 
-search = st.text_input("Film adında ara")
+search = st.text_input("Film adında ara", placeholder="Film adı yaz...")
 
 filtered = df[
     (df['title_year'] >= year_range[0]) & (df['title_year'] <= year_range[1]) &

@@ -6,27 +6,40 @@ html, body, [class*="css"] {
 
 /* Hero bölümü */
 .hero {
-    background: linear-gradient(135deg, #ecfeff 0%, #e0f2fe 100%);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #0f172a 0%, #0f766e 100%);
+    border-radius: 20px;
+    padding: 3.5rem 2rem;
+    margin-bottom: 1.8rem;
     text-align: center;
-    border: 1px solid #ccfbf1;
+    border: 1px solid #14b8a6;
+    box-shadow: 0 4px 32px rgba(20, 184, 166, 0.15);
 }
 
-.hero h1 {
+.hero-logo {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    font-size: 2.6rem;
-    color: #0f766e;
-    margin-bottom: 0.5rem;
+    font-size: 3rem;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.3rem;
 }
 
-.hero p {
-    font-size: 1.05rem;
-    color: #6b7280;
-    max-width: 700px;
+.hero-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #5eead4;
+    margin-bottom: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.hero-desc {
+    font-size: 1rem;
+    color: #94a3b8;
+    max-width: 640px;
     margin: 0 auto;
+    line-height: 1.7;
 }
 
 /* Bölüm başlıkları */

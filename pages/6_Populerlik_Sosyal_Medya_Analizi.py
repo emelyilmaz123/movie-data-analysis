@@ -1,5 +1,6 @@
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 from utils import load_data
 
 st.set_page_config(page_title="Popülerlik & Sosyal Medya Analizi", page_icon="📈", layout="wide")
@@ -10,11 +11,30 @@ with open("style.css") as f:
 df = load_data()
 
 st.markdown('<p class="section-title">📈 Popülerlik & Sosyal Medya Analizi</p>', unsafe_allow_html=True)
+
+# ---------------------------------------------------------------
+# FİLM ARAMA
+# ---------------------------------------------------------------
+arama = st.text_input("", placeholder="Film adı ile filtrele...", label_visibility="collapsed", key="pop_arama")
+
+secili_film = None
+if arama.strip():
+    eslesme = df[df['movie_title'].str.contains(arama, case=False, na=False)].sort_values('imdb_score', ascending=False)
+    if eslesme.empty:
+        st.warning("Film bulunamadı.")
+    else:
+        secim = st.selectbox("Sonuçlar:", eslesme['movie_title'].tolist(), key="pop_secim")
+        secili_film = eslesme[eslesme['movie_title'] == secim].iloc[0]
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Film", secili_film['movie_title'])
+        c2.metric("Oy Sayısı", f"{int(secili_film['num_voted_users']):,}" if secili_film['num_voted_users'] == secili_film['num_voted_users'] else "—")
+        c3.metric("Facebook Beğenisi", f"{int(secili_film['movie_facebook_likes']):,}" if secili_film['movie_facebook_likes'] == secili_film['movie_facebook_likes'] else "—")
+
 st.write("Oy sayısı, eleştiri sayısı, Facebook beğenileri, ülke ve içerik derecesi bazlı analizler.")
 
-# ------------------------------------------------------------
+# ---------------------------------------------------------------
 # OY SAYISI vs IMDB SKORU
-# ------------------------------------------------------------
+# ---------------------------------------------------------------
 col1, col2 = st.columns(2)
 
 fig1 = px.scatter(
@@ -24,7 +44,18 @@ fig1 = px.scatter(
     log_x=True,
     color_discrete_sequence=['#0f766e'],
     labels={'num_voted_users': 'Oy Sayısı', 'imdb_score': 'IMDB Skoru'},
+    opacity=0.5,
 )
+if secili_film is not None and secili_film['num_voted_users'] == secili_film['num_voted_users']:
+    fig1.add_trace(go.Scatter(
+        x=[secili_film['num_voted_users']], y=[secili_film['imdb_score']],
+        mode='markers+text',
+        marker=dict(color='#f97316', size=16, symbol='star'),
+        text=[f"  {secili_film['movie_title'][:15]}"],
+        textposition='middle right',
+        textfont=dict(color='#f97316', size=12),
+        showlegend=False,
+    ))
 col1.plotly_chart(fig1, use_container_width=True)
 
 fig2 = px.scatter(
@@ -34,18 +65,28 @@ fig2 = px.scatter(
     log_x=True, log_y=True,
     color_discrete_sequence=['#14b8a6'],
     labels={'movie_facebook_likes': 'Facebook Beğenisi', 'gross': 'Gişe Geliri ($)'},
+    opacity=0.5,
 )
+if secili_film is not None and secili_film['movie_facebook_likes'] == secili_film['movie_facebook_likes']:
+    fig2.add_trace(go.Scatter(
+        x=[secili_film['movie_facebook_likes']], y=[secili_film['gross']],
+        mode='markers+text',
+        marker=dict(color='#f97316', size=16, symbol='star'),
+        text=[f"  {secili_film['movie_title'][:15]}"],
+        textposition='middle right',
+        textfont=dict(color='#f97316', size=12),
+        showlegend=False,
+    ))
 col2.plotly_chart(fig2, use_container_width=True)
 
 corr_votes_score = df['num_voted_users'].corr(df['imdb_score'])
 corr_fb_gross = df['movie_facebook_likes'].corr(df['gross'])
-
 col1.caption(f"Korelasyon (oy sayısı - IMDB skoru): **{corr_votes_score:.2f}**")
 col2.caption(f"Korelasyon (Facebook beğenisi - gişe geliri): **{corr_fb_gross:.2f}**")
 
-# ------------------------------------------------------------
-# EN ÇOK OY ALAN / EN ÇOK ELEŞTİRİLEN FİLMLER
-# ------------------------------------------------------------
+# ---------------------------------------------------------------
+# EN ÇOK OY ALAN FİLMLER
+# ---------------------------------------------------------------
 st.markdown('<p class="section-title">🗳️ En Çok Oy Alan 10 Film</p>', unsafe_allow_html=True)
 top_voted = df.sort_values('num_voted_users', ascending=False).head(10)[
     ['movie_title', 'title_year', 'num_voted_users', 'num_critic_for_reviews', 'imdb_score']
@@ -53,9 +94,9 @@ top_voted = df.sort_values('num_voted_users', ascending=False).head(10)[
 top_voted.columns = ['Film', 'Yıl', 'Oy Sayısı', 'Eleştiri Sayısı', 'IMDB Skoru']
 st.dataframe(top_voted, use_container_width=True, hide_index=True)
 
-# ------------------------------------------------------------
+# ---------------------------------------------------------------
 # ÜLKE ANALİZİ
-# ------------------------------------------------------------
+# ---------------------------------------------------------------
 st.markdown('<p class="section-title">🌍 Ülke Analizi</p>', unsafe_allow_html=True)
 
 country_counts = df['country'].value_counts().head(10)
@@ -88,10 +129,10 @@ fig4 = px.bar(
 )
 col4.plotly_chart(fig4, use_container_width=True)
 
-# ------------------------------------------------------------
+# ---------------------------------------------------------------
 # İÇERİK DERECESİ ANALİZİ
-# ------------------------------------------------------------
-st.markdown('<p class="section-title">🎟️ İçerik Derecesi (Content Rating) Analizi</p>', unsafe_allow_html=True)
+# ---------------------------------------------------------------
+st.markdown('<p class="section-title">🎟️ İçerik Derecesi Analizi</p>', unsafe_allow_html=True)
 
 rating_df = df.dropna(subset=['content_rating'])
 rating_counts = rating_df['content_rating'].value_counts()
@@ -123,7 +164,6 @@ fig6 = px.bar(
 )
 col6.plotly_chart(fig6, use_container_width=True)
 
-# Bulgu metni için dinamik olarak hesaplanan değerler
 top_country = country_counts.index[0]
 top_country_share = country_counts.iloc[0] / len(df) * 100
 best_avg_country = country_avg.iloc[0]['Ülke']
