@@ -280,3 +280,18 @@ def t(key):
     import streamlit as st
     lang = st.session_state.get('lang', 'tr')
     return STRINGS[lang].get(key, key)
+
+
+def render_lang_selector():
+    import streamlit as st
+    if 'lang' not in st.session_state:
+        st.session_state['lang'] = 'tr'
+    with st.sidebar:
+        st.markdown("---")
+        secim = st.radio("🌐 Dil / Language", ["🇹🇷 Türkçe", "🇬🇧 English"],
+                         index=0 if st.session_state['lang'] == 'tr' else 1,
+                         label_visibility="collapsed")
+        yeni_lang = 'tr' if secim == "🇹🇷 Türkçe" else 'en'
+        if yeni_lang != st.session_state['lang']:
+            st.session_state['lang'] = yeni_lang
+            st.rerun()

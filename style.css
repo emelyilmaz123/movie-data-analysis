@@ -69,6 +69,7 @@ div[data-testid="stMetricValue"] {
     color: #134e4a;
 }
 
+
 /* Sayfa kartı butonları */
 div[data-testid="stButton"] button {
     background-color: #f0fdfa;

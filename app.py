@@ -1,27 +1,14 @@
 import streamlit as st
 import pandas as pd
 from utils import load_data
-from lang import t, STRINGS
+from lang import t, STRINGS, render_lang_selector
 
 st.set_page_config(page_title="FilmRadar", page_icon="📡", layout="wide")
 
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-if 'lang' not in st.session_state:
-    st.session_state['lang'] = 'tr'
-
-# Dil butonu
-col_lang = st.columns([8, 1])[1]
-with col_lang:
-    if st.session_state['lang'] == 'tr':
-        if st.button("🇬🇧 English"):
-            st.session_state['lang'] = 'en'
-            st.rerun()
-    else:
-        if st.button("🇹🇷 Türkçe"):
-            st.session_state['lang'] = 'tr'
-            st.rerun()
+render_lang_selector()
 
 df = load_data()
 

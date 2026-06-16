@@ -1,26 +1,14 @@
 import streamlit as st
 import plotly.express as px
 from utils import load_data
-from lang import t
+from lang import t, render_lang_selector
 
 st.set_page_config(page_title="Yıl Analizi", page_icon="📅", layout="wide")
 
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-if 'lang' not in st.session_state:
-    st.session_state['lang'] = 'tr'
-
-col_lang = st.columns([8, 1])[1]
-with col_lang:
-    if st.session_state['lang'] == 'tr':
-        if st.button("🇬🇧 English", key="lang_yil"):
-            st.session_state['lang'] = 'en'
-            st.rerun()
-    else:
-        if st.button("🇹🇷 Türkçe", key="lang_yil"):
-            st.session_state['lang'] = 'tr'
-            st.rerun()
+render_lang_selector()
 
 df = load_data()
 
