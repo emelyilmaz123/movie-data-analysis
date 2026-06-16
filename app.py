@@ -132,39 +132,37 @@ for col, (path, title, desc) in zip(cols, pages):
         if st.button(f"{title}\n\n{desc}", key=path, use_container_width=True):
             st.switch_page(path)
 
+total_films = len(df)
+total_directors = df['director_name'].nunique()
+total_genres = df['main_genre'].nunique()
+year_min = int(df['title_year'].min())
+year_max = int(df['title_year'].max())
+footer_desc = t('footer_desc')
+footer_dev = t('footer_dev')
+footer_copy = t('footer_copy')
+footer_films = t('footer_stat_films')
+footer_dirs = t('footer_stat_directors')
+footer_genres = t('footer_stat_genres')
+footer_years = t('footer_stat_years')
+
 st.markdown(
     f"""
-    <div class="footer-rich">
-        <div class="footer-logo">📡 FilmRadar</div>
-        <p class="footer-desc">{t('footer_desc')}</p>
-
-        <div class="footer-stats">
-            <div class="footer-stat">
-                <div class="footer-stat-value">{len(df):,}</div>
-                <div class="footer-stat-label">{t('footer_stat_films')}</div>
-            </div>
-            <div class="footer-stat">
-                <div class="footer-stat-value">{df['director_name'].nunique():,}</div>
-                <div class="footer-stat-label">{t('footer_stat_directors')}</div>
-            </div>
-            <div class="footer-stat">
-                <div class="footer-stat-value">{df['main_genre'].nunique()}</div>
-                <div class="footer-stat-label">{t('footer_stat_genres')}</div>
-            </div>
-            <div class="footer-stat">
-                <div class="footer-stat-value">{int(df['title_year'].min())}–{int(df['title_year'].max())}</div>
-                <div class="footer-stat-label">{t('footer_stat_years')}</div>
-            </div>
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#0f766e 100%);border-radius:16px;padding:2.5rem 2rem;margin-top:3rem;text-align:center;">
+        <div style="font-family:Poppins,sans-serif;font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:0.4rem;">📡 FilmRadar</div>
+        <p style="font-size:0.95rem;color:#94a3b8;max-width:520px;margin:0 auto 1.8rem auto;line-height:1.7;">{footer_desc}</p>
+        <div style="display:flex;justify-content:center;gap:2.5rem;margin-bottom:1.8rem;flex-wrap:wrap;">
+            <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{total_films:,}</div><div style="font-size:0.8rem;color:#94a3b8;">{footer_films}</div></div>
+            <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{total_directors:,}</div><div style="font-size:0.8rem;color:#94a3b8;">{footer_dirs}</div></div>
+            <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{total_genres}</div><div style="font-size:0.8rem;color:#94a3b8;">{footer_genres}</div></div>
+            <div><div style="font-size:1.4rem;font-weight:700;color:#5eead4;">{year_min}–{year_max}</div><div style="font-size:0.8rem;color:#94a3b8;">{footer_years}</div></div>
         </div>
-
-        <div class="footer-links">
-            <span>👩‍💻 {t('footer_dev')}: Emel Yılmaz</span>
-            <a href="https://github.com/emelyilmaz123/movie-data-analysis" target="_blank">⭐ GitHub</a>
-            <a href="https://streamlit.io" target="_blank">🚀 Streamlit</a>
-            <span>📊 IMDB 5000 Dataset</span>
+        <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:1rem;font-size:0.9rem;">
+            <span style="color:#cbd5e1;">👩‍💻 {footer_dev}: Emel Yılmaz</span>
+            <a href="https://github.com/emelyilmaz123/movie-data-analysis" target="_blank" style="color:#5eead4;text-decoration:none;">⭐ GitHub</a>
+            <a href="https://streamlit.io" target="_blank" style="color:#5eead4;text-decoration:none;">🚀 Streamlit</a>
+            <span style="color:#cbd5e1;">📊 IMDB 5000 Dataset</span>
         </div>
-
-        <div class="footer-copy">{t('footer_copy')}</div>
+        <div style="font-size:0.8rem;color:#64748b;">{footer_copy}</div>
     </div>
     """,
     unsafe_allow_html=True,
